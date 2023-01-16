@@ -30,11 +30,11 @@ The submission files are organised per student, by extracting the student number
 - Extract the downloaded gradebook in a new directory inside *BB_gradebooks*
 
 ### Run script
-- Before running the script for the first time, install the required packages 
+- Before running the script for the first time, install the required python packages 
   - `python -m pip install -r requirements.txt`
-- If running on Linux/Mac, you also need to install *unrar* in order to be able to extract .rar files
-  - `sudo apt install unrar` for Linux
-  - `brew install rar` for Mac
+  - If running on Linux/Mac, you also need to have *unrar* installed in order to be able to extract .rar files
+    - `sudo apt install unrar` for Linux
+    - `brew install rar` for Mac
 - Provide the name of the directory (from section *Extract gradebook* above) as an argument when running the script
   - `python organise_gradebook.py GRADEBOOK_DIR_NAME`
 - While running, the script displays on the terminal information and stats about the gradebook submissions and files
@@ -46,4 +46,8 @@ The submission files are organised per student, by extracting the student number
 - All comments found in the gradebook are extracted in a text file in *BB_submissions*, with the gradebook name as prefix
   - e.g. *AssignmentX_comments.txt* will be created for gradebook *AssignmentX*
 - Compressed files are deleted after successfully extracting and organising the contents
-  - any invalid/corrupt compressed files are moved into folder *\__BAD__\_* inside the gradebook directory
+  - any invalid/corrupt compressed files are moved into folder *\_\_BAD\_\_* inside the gradebook directory
+
+## Notes
+
+The Blackboard generated name for submission files must follow the pattern *ANYTHING_STUDENTNUMBER_attempt_ANYTHING*
