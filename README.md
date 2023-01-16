@@ -30,7 +30,7 @@ The submission files are organised per student, by extracting the student number
 - Extract the downloaded gradebook in a new directory inside *BB_gradebooks*
 
 ### Run script
-- Before running the script for the first time, install the required python packages 
+- Before running the script for the first time, install the required packages 
   - `python -m pip install -r requirements.txt`
   - If running on Linux/Mac, you also need to have *unrar* installed in order to be able to extract .rar files
     - `sudo apt install unrar` for Linux
