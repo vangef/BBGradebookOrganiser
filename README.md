@@ -10,11 +10,11 @@ The submission files are organised per student, by extracting the student number
 - Extracts, and organises per student, the content of submitted compressed files with extensions: .zip, .rar, .7z
   - Detects invalid/corrupt files
   - Doesn't extract macOS system generated files (ignores directory *__MACOSX* inside the compressed file)
-  - If a compressed file is found inside a submitted compressed file, it is organised into the student's folder
-    - The path is displayed on the terminal so it can then be extracted manually
 - Deletes each compressed file after successful extraction into student directory
 - Organises per student any remaining individually submitted files
 - Checks and extracts any comments from the student submission generated text files
+- Checks if any compressed files (from the contents of the submitted compressed files) have been extracted and organised per student
+  - The path of any extracted and organised compressed files will be displayed on the terminal - they need to be extracted manually
 
 ## Instructions
 
