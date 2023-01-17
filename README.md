@@ -49,4 +49,4 @@ The submission files are organised per student, by extracting the student number
 
 ## Notes
 
-The Blackboard generated name for submission files must follow the pattern *ANYTHING_STUDENTNUMBER_attempt_ANYTHING*
+The Blackboard generated name for submission files must follow the pattern *ANYTHING_STUDENTNUMBER_attempt_DATETIME_FILENAME*
