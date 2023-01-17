@@ -4,7 +4,7 @@ Blackboard Gradebook Organiser
 ## Description
 
 **Blackboard Gradebook Organiser** is a tool for organising a downloaded gradebook with assignment submissions from [Blackboard Learn](https://en.wikipedia.org/wiki/Blackboard_Learn).
-The submission files are organised per student, by extracting the student number from the submission file names and creating a directory per student. Any compressed files (.zip, .rar, .7z) are extracted into the student's directory, with any remaining files submitted individually also moved into the student's directory.
+The submission files are organised per student, by extracting the student number from the submission file names and creating a directory per student. Any compressed files (.zip, .rar, .7z) are extracted into the student's directory, with any remaining files submitted individually also moved into the student's directory. Student comments from submissions are also extracted into a single text file for convenient access and review. 
 
 ### Features
 - Extracts, and organises per student, the content of submitted compressed files with extensions: .zip, .rar, .7z
@@ -49,4 +49,6 @@ The submission files are organised per student, by extracting the student number
 
 ## Notes
 
-The Blackboard generated name for submission files must follow the pattern *ANYTHING_STUDENTNUMBER_attempt_DATETIME_FILENAME*
+The Blackboard generated name for submission files must follow the pattern:
+> ANYTHING_STUDENTNUMBER_attempt_DATETIME_FILENAME
+
