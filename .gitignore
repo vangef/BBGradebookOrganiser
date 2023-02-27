@@ -132,6 +132,7 @@ dmypy.json
 
 BB_gradebooks/
 BB_submissions/
+csv/
 
 !BB_gradebooks/README.md
 !BB_submissions/README.md
