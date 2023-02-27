@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# BBGradebookOrganiser
+
+BB_gradebooks/
+BB_submissions/
+
+!BB_gradebooks/README.md
+!BB_submissions/README.md
