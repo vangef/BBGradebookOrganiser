@@ -13,7 +13,7 @@ def get_hashes_in_dir(dir_path: str) -> list:
             filepath = os.path.join(subdir, file)
             with open(filepath, 'rb') as f:
                 filehash = hashlib.sha256(f.read()).hexdigest()
-                hash_list.append({ 'file': filepath, 'sha256 hash': filehash})
+                hash_list.append({ 'filepath': filepath, 'filename': file, 'sha256 hash': filehash})
     return hash_list
 
 
@@ -24,7 +24,7 @@ def hash_submissions(submissions_dir_path: str):
     csv_file_name = f'{submissions_dir_name}_file_hashes_{datetime.now().strftime("%Y%m%d-%H%M%S")}.csv'
     csv_file_path = os.path.join(CSV_DIR, csv_file_name)
     with open(csv_file_path, 'w', newline='') as csvfile:      # Open the output CSV file for writing
-        fieldnames = ['Student ID', 'file', 'sha256 hash']
+        fieldnames = ['Student ID', 'filepath', 'filename', 'sha256 hash']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -37,7 +37,7 @@ def hash_submissions(submissions_dir_path: str):
     return csv_file_path
 
 def get_suspicious_hashes(df: pd.DataFrame) -> list:
-    drop_columns = ['file']
+    drop_columns = ['filepath', 'filename']
     df = df.drop(columns=drop_columns).sort_values('sha256 hash')  # clear not needed colums & sort by hash
     duplicate_hash = df.loc[df.duplicated(subset=['sha256 hash'], keep=False), :]  # all files with duplicate hash - incl. files from the same student id
 
