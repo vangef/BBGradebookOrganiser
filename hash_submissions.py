@@ -1,3 +1,7 @@
+### TESTING
+### feature to hash all gradebook submission files, and check for duplicates across all students / submissions
+### not fully implemented yet - only creates hashes and outputs to csv for manual inspection
+
 import os, sys
 from datetime import datetime
 import csv
@@ -37,3 +41,4 @@ def main():
 
 if __name__ == '__main__':    
     main()
+
