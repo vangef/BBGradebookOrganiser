@@ -24,6 +24,8 @@ def extract_zip(zip_file, target_dir):
             zip_ref.close()
     except zipfile.BadZipfile as e:
         mark_file_as_BAD(zip_file, e)
+    except Exception as e:
+        print(f'[ERROR] Something went wrong while extracting zip contents. Check the error message, get student id and download / organise manually\nError message: {e}')
 
 
 def extract_rar(rar_file, target_dir):
