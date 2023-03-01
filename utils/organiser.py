@@ -3,6 +3,17 @@ from utils.extractor import extract_file_to_dir
 
 BAD_DIR_NAME = '__BAD__'
 
+def remove_trailing_spaces_from_filenames(gradebook_dir):
+    for filename in os.listdir(gradebook_dir):
+        if BAD_DIR_NAME not in filename:
+            name, ext = os.path.splitext(filename)  # separate file name from extension
+            if name != name.rstrip():
+                new_filename = name.rstrip() + ext  # remove trailing spaces from file name and combines with extension
+                new_file_path = os.path.join(gradebook_dir, new_filename)
+                old_file_path = os.path.join(gradebook_dir, filename)
+                os.rename(old_file_path, new_file_path)  # rename file
+
+
 def validate_gradebook_dir_name(src_dir):
     if not os.path.isdir(src_dir):  # check if it exists and is a directory
         print(f"\n[Error] Incorrect directory: {src_dir}\n[Info] Make sure the directory exists in 'BB_gradebooks'")
