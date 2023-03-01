@@ -49,7 +49,7 @@ Additionally, after organising submissions, you can inspect all submitted files 
 - Compressed files are deleted after successfully extracting and organising the contents
   - any invalid/corrupt compressed files are moved into folder *\_\_BAD\_\_* inside the gradebook directory
 
-## Inspect submissions :new: {#inspect-submissions}
+## Inspect submissions :mag: {#inspect-submissions}
 ### Description
 - Generates SHA256 hashes for each submitted file, and outputs list to CSV file
 - Compares the generated hashes and finds any duplicate hashes - ignores duplicates if they are by the same student/submission
