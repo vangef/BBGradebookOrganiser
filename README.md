@@ -4,7 +4,8 @@ Blackboard Gradebook Organiser
 ## Description
 
 **Blackboard Gradebook Organiser** is a tool for organising a downloaded gradebook with assignment submissions from [Blackboard Learn](https://en.wikipedia.org/wiki/Blackboard_Learn).
-The submission files are organised per student, by extracting the student number from the submission file names and creating a directory per student. Any compressed files (.zip, .rar, .7z) are extracted into the student's directory, with any remaining files submitted individually also moved into the student's directory. Student comments from submissions are also extracted into a single text file for convenient access and review. 
+The submission files are organised per student, by extracting the student number from the submission file names and creating a directory per student. Any compressed files (.zip, .rar, .7z) are extracted into the student's directory, with any remaining files submitted individually also moved into the student's directory. Student comments from submissions are also extracted into a single text file for convenient access and review.  
+Additionally, after organising submissions, you can inspect all submitted files to detect duplicated files from different submissions/students by generating and comparing SHA256 hashes. See section [Inspect submissions](#inspect-submissions) for details.
 
 ### Features
 - Extracts, and organises per student, the content of submitted compressed files with extensions: .zip, .rar, .7z
@@ -15,6 +16,7 @@ The submission files are organised per student, by extracting the student number
 - Checks and extracts any comments from the student submission generated text files
 - Checks if any compressed files (from the contents of the submitted compressed files) have been extracted and organised per student
   - The path of any extracted and organised compressed files will be displayed on the terminal - they need to be extracted manually
+- [Inspect submissions](#inspect-submissions) :new:
 
 ## Instructions
 
@@ -47,8 +49,22 @@ The submission files are organised per student, by extracting the student number
 - Compressed files are deleted after successfully extracting and organising the contents
   - any invalid/corrupt compressed files are moved into folder *\_\_BAD\_\_* inside the gradebook directory
 
+## Inspect submissions :new: {#inspect-submissions}
+### Description
+- Generates SHA256 hashes for each submitted file, and outputs list to CSV file
+- Compares the generated hashes and finds any duplicate hashes - ignores duplicates if they are by the same student/submission
+- Finds all files with a duplicated hash and outputs them to CSV file with the following information: Student ID, file path, file name (without path), SHA256 hash
+  - Further inspection and filtering needs to be done manually, depending on the submission files
+### Usage
+- For this feature you also need to install the pandas package
+  - `python -m pip install pandas`
+- Usage: `python inspect_submissions.py GRADEBOOK_DIR_NAME`
+- Generated CSV files can be found in directory *csv*, with *GRADEBOOK_DIR_NAME* as file name prefix
+  - e.g. inspecting submissions for *AssignmentX* will create 2 csv files:
+    - AssignmentX_file_hashes_[datetime].csv
+    - AssignmentX_suspicious_[datetime].csv
+
 ## Notes
 
 The Blackboard generated name for submission files must follow the pattern:
 > ANYTHING_STUDENTNUMBER_attempt_DATETIME_FILENAME
-
