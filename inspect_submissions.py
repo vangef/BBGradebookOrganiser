@@ -19,6 +19,7 @@ def main():
         csv_name = f'{submissions_dir_name}_suspicious_{datetime.now().strftime("%Y%m%d-%H%M%S")}.csv'
         csv_out = os.path.join(CSV_DIR, csv_name)
         df_suspicious.to_csv(csv_out, index=False)
+        print(f'[INFO] Created CSV file with duplicate/suspicious hashes in {submissions_dir_name}\nCSV file: {csv_out}')
 
 
 if __name__ == '__main__':    

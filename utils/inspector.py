@@ -34,6 +34,7 @@ def hash_submissions(submissions_dir_path: str) -> str:
             for d in hashes_dict:
                 d.update({'Student ID': student_dir_name})  # update hash records with student id
             writer.writerows(hashes_dict)
+    print(f'[INFO] Created CSV file with all files & hashes in {submissions_dir_name}\nCSV file: {csv_file_path}')
     return csv_file_path
 
 
