@@ -5,7 +5,7 @@ Blackboard Gradebook Organiser
 
 **Blackboard Gradebook Organiser** is a tool for organising a downloaded gradebook with assignment submissions from [Blackboard Learn](https://en.wikipedia.org/wiki/Blackboard_Learn).
 The submission files are organised per student, by extracting the student number from the submission file names and creating a directory per student. Any compressed files (.zip, .rar, .7z) are extracted into the student's directory, with any remaining files submitted individually also moved into the student's directory. Student comments from submissions are also extracted into a single text file for convenient access and review.  
-Additionally, after organising submissions, you can inspect all submitted files to detect duplicated files from different submissions/students by generating and comparing SHA256 hashes. See section [Inspect submissions](#inspect-submissions) for details.
+Additionally, after organising submissions, you can inspect all submitted files to detect duplicated files from different submissions/students by generating and comparing SHA256 hashes. See section [Inspect submissions](#inspect-submissions-mag) for details.
 
 ### Features
 - Extracts, and organises per student, the content of submitted compressed files with extensions: .zip, .rar, .7z
@@ -16,7 +16,7 @@ Additionally, after organising submissions, you can inspect all submitted files 
 - Checks and extracts any comments from the student submission generated text files
 - Checks if any compressed files (from the contents of the submitted compressed files) have been extracted and organised per student
   - The path of any extracted and organised compressed files will be displayed on the terminal - they need to be extracted manually
-- [Inspect submissions](#inspect-submissions) by SHA256 hash :new:
+- [Inspect submissions](#inspect-submissions-mag) by SHA256 hash :new:
 
 ## Instructions
 
@@ -49,7 +49,7 @@ Additionally, after organising submissions, you can inspect all submitted files 
 - Compressed files are deleted after successfully extracting and organising the contents
   - any invalid/corrupt compressed files are moved into folder *\_\_BAD\_\_* inside the gradebook directory
 
-## Inspect submissions :mag: {#inspect-submissions}
+## Inspect submissions :mag: {#inspect-submissions-mag}
 ### Description
 - Generates SHA256 hashes for each submitted file, and outputs list to CSV file
 - Compares the generated hashes and finds any duplicate hashes - ignores duplicates if they are by the same student/submission
