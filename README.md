@@ -16,7 +16,7 @@ Additionally, after organising submissions, you can inspect all submitted files 
 - Checks and extracts any comments from the student submission generated text files
 - Checks if any compressed files (from the contents of the submitted compressed files) have been extracted and organised per student
   - The path of any extracted and organised compressed files will be displayed on the terminal - they need to be extracted manually
-- [Inspect submissions](#inspect-submissions) :new:
+- [Inspect submissions](#inspect-submissions) by SHA256 hash :new:
 
 ## Instructions
 
