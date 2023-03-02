@@ -60,7 +60,7 @@ Additionally, after organising submissions, you can inspect all submitted files 
 - For this feature you also need to install the pandas package
   - `python -m pip install pandas`
 - Usage: `python inspect_submissions.py GRADEBOOK_DIR_NAME`
-  - Note: run *after* organising a gradebook with `organise_gradebook.py`
+  - Note: run **after** organising a gradebook with `organise_gradebook.py`
 - In order to exclude files from hashing, create a CSV file in directory *csv* to provide the file names to be excluded
   - e.g. for AssignmentX: create *AssignmentX_excluded.csv*, with a column named "exclude_filename" and list the file names
   - Note: the directory *csv* is automatically created when you run inspect_submissions.py - you need to create it manually if you want to exclude files before the first run 
