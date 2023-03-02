@@ -59,6 +59,7 @@ Additionally, after organising submissions, you can inspect all submitted files 
 - For this feature you also need to install the pandas package
   - `python -m pip install pandas`
 - Usage: `python inspect_submissions.py GRADEBOOK_DIR_NAME`
+  - Note: run *after* organising a gradebook with `organise_gradebook.py`
 - Generated CSV files can be found in directory *csv*, with *GRADEBOOK_DIR_NAME* as file name prefix
   - e.g. inspecting submissions for *AssignmentX* will create 2 csv files:
     - AssignmentX_file_hashes_[datetime].csv
