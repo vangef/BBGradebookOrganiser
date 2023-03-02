@@ -52,6 +52,7 @@ Additionally, after organising submissions, you can inspect all submitted files 
 ## Inspect submissions :mag:
 ### Description
 - Generates SHA256 hashes for each submitted file, and outputs list to CSV file
+  - Can exclude files from hashing, if provided with a CSV file listing the file names 
 - Compares the generated hashes and finds any duplicate hashes - ignores duplicates if they are by the same student/submission
 - Finds all files with a duplicated hash and outputs them to CSV file with the following information: Student ID, file path, file name (without path), SHA256 hash
   - Further inspection and filtering needs to be done manually, depending on the submission files
@@ -60,6 +61,8 @@ Additionally, after organising submissions, you can inspect all submitted files 
   - `python -m pip install pandas`
 - Usage: `python inspect_submissions.py GRADEBOOK_DIR_NAME`
   - Note: run *after* organising a gradebook with `organise_gradebook.py`
+- In order to exclude files from hashing, create a CSV file in directory *csv* to provide the file names to be excluded
+  - e.g. for AssignmentX: create AssignmentX_excluded.csv, with a column named "exclude_filename" and list the file names
 - Generated CSV files can be found in directory *csv*, with *GRADEBOOK_DIR_NAME* as file name prefix
   - e.g. inspecting submissions for *AssignmentX* will create 2 csv files:
     - AssignmentX_file_hashes_[datetime].csv
