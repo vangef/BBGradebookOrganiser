@@ -31,9 +31,10 @@ def get_hashes_in_dir(dir_path: str, excluded_filenames: list = []) -> list:  # 
         for filename in files:
             if filename.lower() not in excluded_filenames:  # convert to lowercase for comparison with excluded files & do not hash if in the excluded list
                 filepath = os.path.join(subdir, filename)
-                with open(filepath, 'rb') as f:
+                with open(filepath, 'rb') as f: 
                     filehash = hashlib.sha256(f.read()).hexdigest()
-                    hash_list.append({ 'filepath': filepath, 'filename': filename, 'sha256 hash': filehash})
+                    if filehash != 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855':  # do not include hashes of empty files
+                        hash_list.append({ 'filepath': filepath, 'filename': filename, 'sha256 hash': filehash})
     return hash_list
 
 
