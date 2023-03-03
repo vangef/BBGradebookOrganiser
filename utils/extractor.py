@@ -4,7 +4,7 @@ from py7zr import SevenZipFile, exceptions
 
 BAD_DIR_NAME = '__BAD__'
 
-def mark_file_as_BAD(file, bad_exception):
+def mark_file_as_BAD(file: str, bad_exception: Exception) -> None:
     try:
         filename = os.path.basename(file)
         bad_dir = os.path.join(os.path.dirname(file), BAD_DIR_NAME)
@@ -16,7 +16,7 @@ def mark_file_as_BAD(file, bad_exception):
         print(f'[Error] {e}')
 
 
-def extract_zip(zip_file, target_dir):
+def extract_zip(zip_file: str, target_dir: str) -> None:
     try:
         with zipfile.ZipFile(zip_file, 'r') as zip_ref:
             members = [ m for m in zip_ref.infolist() if "__MACOSX" not in m.filename ]
@@ -25,10 +25,10 @@ def extract_zip(zip_file, target_dir):
     except zipfile.BadZipfile as e:
         mark_file_as_BAD(zip_file, e)
     except Exception as e:
-        print(f'[ERROR] Something went wrong while extracting zip contents. Check the error message, get student id and download / organise manually\nError message: {e}')
+        print(f'[ERROR] Something went wrong while extracting the contents of a submitted zip file. Check the error message, get student id and download / organise manually\nError message: {e}')
 
 
-def extract_rar(rar_file, target_dir):
+def extract_rar(rar_file: str, target_dir: str) -> None:
     try:    
         with rarfile.RarFile(rar_file, 'r') as rar_ref:
             if platform.system() == 'Windows':
@@ -48,7 +48,7 @@ def extract_rar(rar_file, target_dir):
         exit()
 
 
-def extract_7z(seven_zip_file, target_dir):
+def extract_7z(seven_zip_file: str, target_dir: str) -> None:
     try:  # extract the 7z file using py7zr
         with open(seven_zip_file, 'rb') as f:
             seven_zip = SevenZipFile(seven_zip_file, mode='r')
@@ -64,7 +64,7 @@ def extract_7z(seven_zip_file, target_dir):
         mark_file_as_BAD(seven_zip_file, e)
 
 
-def extract_file_to_dir(file_path, student_dir):
+def extract_file_to_dir(file_path: str, student_dir: str) -> None:
     os.makedirs(student_dir, exist_ok=True)  # create the subdirectory for student
 
     if file_path.lower().endswith('.zip'):

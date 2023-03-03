@@ -16,6 +16,7 @@ def load_excluded_filenames(submissions_dir_name: str) -> list[str]:  # helper f
         try:            
             df = pd.read_csv(csv_file_path)
             filename_list = df['exclude_filename'].tolist()  # get the values of the 'filename' column as a list
+            filename_list = [ f.lower() for f in filename_list ]  # convert to lowercase for comparison with submission files
             print(f'[INFO] Using CSV file with list of excluded file names: {csv_file_path}')
             return filename_list
         except Exception as e:  # any exception, print error and return empty list to continue without any excluded file names
@@ -28,7 +29,7 @@ def get_hashes_in_dir(dir_path: str, excluded_filenames: list = []) -> list:  # 
     hash_list = []
     for subdir, dirs, files in os.walk(dir_path):  # loop through all files in the directory and generate hashes
         for filename in files:
-            if filename not in excluded_filenames:  # do not hash for inspection file names in the excluded list
+            if filename.lower() not in excluded_filenames:  # convert to lowercase for comparison with excluded files & do not hash if in the excluded list
                 filepath = os.path.join(subdir, filename)
                 with open(filepath, 'rb') as f:
                     filehash = hashlib.sha256(f.read()).hexdigest()
@@ -62,10 +63,16 @@ def inspect_for_duplicate_hashes(hashes_csv_file_path: str):  # main function fo
     csv = pd.read_csv(hashes_csv_file_path)
     df = pd.DataFrame(csv)  # df with all files and their hashes
     drop_columns = ['filepath', 'filename']  # only need to keep 'student id' and 'sha256 hash' for groupby later
-    df = df.drop(columns=drop_columns)  # clear not needed columns
-    duplicate_hash = df.loc[df.duplicated(subset=['sha256 hash'], keep=False), :]  # all files with duplicate hash - incl. files from the same student id
-    hash_with_multiple_student_ids = duplicate_hash.groupby('sha256 hash').agg(lambda x: len(x.unique())>1)  # true if more than 1 unique student ids (= files with the same hash by multiple student ids), false if unique student id (= files from the same student id with the same hash)
-    suspicious_hashes_list = hash_with_multiple_student_ids[hash_with_multiple_student_ids['Student ID']==True].index.to_list()  # list with duplicate hashes - only if different student id (doesn't include files from same student id)
+    df_clean = df.drop(columns=drop_columns)  # clear not needed columns
+    duplicate_hash = df_clean.loc[df_clean.duplicated(subset=['sha256 hash'], keep=False), :]  # all files with duplicate hash - incl. files from the same student id
+    
+    # agg() for 'Student ID' True if more than 1 in groupby (= files with the same hash by multiple student ids)
+    # False if unique (= files from the same student id with the same hash)
+    hash_with_multiple_student_ids = duplicate_hash.groupby('sha256 hash').agg(lambda x: len(x.unique())>1)
+    
+    # list with duplicate hashes - only if different student id (doesn't include files from same student id)
+    suspicious_hashes_list = hash_with_multiple_student_ids[hash_with_multiple_student_ids['Student ID']==True].index.to_list()
+    
     files_with_suspicious_hash = df[df['sha256 hash'].isin(suspicious_hashes_list)]  # df with all files with duplicate/suspicious hash, excludes files from the same student id
     df_suspicious = files_with_suspicious_hash.sort_values(['sha256 hash', 'Student ID'])  # sort before output to csv
     

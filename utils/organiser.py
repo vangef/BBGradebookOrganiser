@@ -4,7 +4,7 @@ from utils.extractor import extract_file_to_dir
 BAD_DIR_NAME = '__BAD__'
 
 
-def validate_gradebook_dir_name(src_dir):
+def validate_gradebook_dir_name(src_dir: str) -> None:
     if not os.path.isdir(src_dir):  # check if it exists and is a directory
         print(f"\n[Error] Incorrect directory: {src_dir}\n[Info] Make sure the directory exists in 'BB_gradebooks'")
         exit()
@@ -16,7 +16,7 @@ def validate_gradebook_dir_name(src_dir):
         exit()
 
 
-def get_comment_from_submission_txt(file_path):
+def get_comment_from_submission_txt(file_path: str) -> str | None:
     no_comment_text = f'Comments:\nThere are no student comments for this assignment.'
     no_comment_text_regex = no_comment_text
     no_comment_regex_compile = re.compile(no_comment_text_regex)
@@ -30,9 +30,10 @@ def get_comment_from_submission_txt(file_path):
             match = str(match).replace('\\n', '').replace('[','').replace(']','').replace('"','')
             match = str(match).split('Comments:')[-1]
             return match
+    return None
 
 
-def get_gradebook_stats(src_dir):
+def get_gradebook_stats(src_dir: str) -> dict[str, int]:
     all_files = [ os.path.join(src_dir, f) for f in os.listdir(src_dir) if BAD_DIR_NAME not in f ]
     dirs = [ f for f in all_files if os.path.isdir(f) and BAD_DIR_NAME not in f ]
     normal_files = [ f for f in all_files if os.path.isfile(f) ]
@@ -57,7 +58,7 @@ def get_gradebook_stats(src_dir):
     return files_counter
 
 
-def organise_file_per_student(src_dir, dest_dir, file_name, student_no):
+def organise_file_per_student(src_dir: str, dest_dir: str, file_name: str, student_no: str) -> None:
     student_dir = os.path.join(dest_dir, student_no)
     os.makedirs(student_dir, exist_ok=True)  # create student directory if it doesn't exist
     file_path = os.path.join(src_dir, file_name)
@@ -80,7 +81,7 @@ def organise_file_per_student(src_dir, dest_dir, file_name, student_no):
             shutil.move(file_path, new_file_path)  # move the file to student directory
 
 
-def organise_gradebook(src_dir, dest_dir):
+def organise_gradebook(src_dir: str, dest_dir: str) -> None:
     """1) extracts .zip, .rar, .7z files, organises contents into directories per student number, and deletes compressed files after successful extraction
     2) organises all other files in gradebook into directories per student number
     3) checks if there are any comments in submission text files and extracts them into a file
@@ -88,7 +89,7 @@ def organise_gradebook(src_dir, dest_dir):
     validate_gradebook_dir_name(src_dir)  # check if dir exists, and has files in it - exits if not
     os.makedirs(dest_dir, exist_ok=True)  # create the destination directory if it doesn't exist
     files_counter = get_gradebook_stats(src_dir)  # print stats about the files in gradebook and get files_counter dict to use later
-    students_numbers = []  # list to add and count unique student numbers from all files in gradebook 
+    students_numbers: list[str] = []  # list to add and count unique student numbers from all files in gradebook 
     print('\nStart organising...\n')
     for file_name in os.listdir(src_dir):  # iterate through all files in the directory
         if BAD_DIR_NAME not in file_name:  # ignore dir BAD_DIR_NAME (created after first run if corrupt compressed files found)
@@ -107,11 +108,11 @@ def organise_gradebook(src_dir, dest_dir):
     print(f'[Note] Compressed files (.zip, .rar, .7z) are automatically deleted from the gradebook directory after successful extraction')
 
     
-def check_submissions_dir_for_compressed(submissions_dir):
+def check_submissions_dir_for_compressed(submissions_dir: str) -> None:
     """checks if any submitted compressed files contain more compressed files inside (they are not recursively extracted)
     \nprints any compressed files location that need to be extracted manually
     """
-    compressed_files = []
+    compressed_files: list[str] = []
     abs_path = os.getcwd()
     for the_path, dirc, files in os.walk(submissions_dir):
         for fname in files:
