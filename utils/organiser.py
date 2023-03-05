@@ -65,8 +65,9 @@ def organise_file_per_student(src_dir: str, dest_dir: str, file_name: str, stude
     if os.path.isfile(file_path):
         file_path_lowercase = file_path.lower()
         if file_path_lowercase.endswith('.zip') or file_path_lowercase.endswith('.rar') or file_path_lowercase.endswith('.7z'):
-            extract_file_to_dir(file_path, student_dir)  # extract the file to student directory
-            if os.path.exists(file_path):  # check if compressed file exists (or it was BAD and moved), and remove if exists
+            exception_flag = extract_file_to_dir(file_path, student_dir)  # extract the file to student directory
+            # check if compressed file exists (or it was BAD and moved), and no exception was returned from extracting - remove if both true
+            if os.path.exists(file_path) and exception_flag is None:
                 os.remove(file_path)  # delete compressed file after successful extraction
         else:
             if file_path_lowercase.endswith('.txt'):
@@ -88,6 +89,7 @@ def organise_gradebook(src_dir: str, dest_dir: str) -> None:
     """
     validate_gradebook_dir_name(src_dir)  # check if dir exists, and has files in it - exits if not
     os.makedirs(dest_dir, exist_ok=True)  # create the destination directory if it doesn't exist
+    print('\nGetting gradebook stats...')
     files_counter = get_gradebook_stats(src_dir)  # print stats about the files in gradebook and get files_counter dict to use later
     students_numbers: list[str] = []  # list to add and count unique student numbers from all files in gradebook 
     print('\nStart organising...\n')

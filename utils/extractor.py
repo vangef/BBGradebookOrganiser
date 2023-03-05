@@ -16,7 +16,7 @@ def mark_file_as_BAD(file: str, bad_exception: Exception) -> None:
         print(f'[Error] {e}')
 
 
-def extract_zip(zip_file: str, target_dir: str) -> None:
+def extract_zip(zip_file: str, target_dir: str) -> None | Exception:
     try:
         with zipfile.ZipFile(zip_file, 'r') as zip_ref:
             members = [ m for m in zip_ref.infolist() if "__MACOSX" not in m.filename ]
@@ -26,6 +26,7 @@ def extract_zip(zip_file: str, target_dir: str) -> None:
         mark_file_as_BAD(zip_file, e)
     except Exception as e:
         print(f'[ERROR] Something went wrong while extracting the contents of a submitted zip file. Check the error message, get student id and download / organise manually\nError message: {e}')
+        return e
 
 
 def extract_rar(rar_file: str, target_dir: str) -> None:
@@ -64,11 +65,11 @@ def extract_7z(seven_zip_file: str, target_dir: str) -> None:
         mark_file_as_BAD(seven_zip_file, e)
 
 
-def extract_file_to_dir(file_path: str, student_dir: str) -> None:
+def extract_file_to_dir(file_path: str, student_dir: str) -> None | Exception:
     os.makedirs(student_dir, exist_ok=True)  # create the subdirectory for student
 
     if file_path.lower().endswith('.zip'):
-        extract_zip(file_path, student_dir)
+        return extract_zip(file_path, student_dir)
     elif file_path.lower().endswith('.rar'):
         extract_rar(file_path, student_dir) 
     elif file_path.lower().endswith('.7z'):
