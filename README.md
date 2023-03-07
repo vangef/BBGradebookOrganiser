@@ -46,7 +46,7 @@ Optionally, after organising a gradebook, you can inspect the submissions to det
 
 Extract the downloaded gradebook in a new directory inside [*BB_gradebooks*](BB_gradebooks).
 
-- e.g. for `AssignmentX` extract the gradebook in `BB_gradebooks\AssignmentX`
+- e.g. for `AssignmentX` extract the gradebook in [*BB_gradebooks*](BB_gradebooks)/`AssignmentX`
 
 ### **Organise gradebook**
 
