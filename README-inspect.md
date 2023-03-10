@@ -46,7 +46,7 @@ To inspect a *gradeboook* run **`inspect_gradebook.py`** and provide the name of
 python inspect_gradebook.py AssignmentX
 ```
 
-**Note:** run ***before*** organising a gradebook with *organise_gradebook.py*
+**Note:** run ***before*** organising a gradebook with *organise_gradebook.py* (or extract, again, the downloaded gradebook, if you want to inspect it after organising its submissions)
 
 Generated CSV files can be found in directory `csv-inspect`, with the inspected gradebook's name as file name prefix - e.g. inspecting gradebook `AssignmentX` will create 2 CSV files:
 
