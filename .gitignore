@@ -132,7 +132,7 @@ dmypy.json
 TODO
 BB_gradebooks/
 BB_submissions/
-csv/
+csv-inspect/
 
 !BB_gradebooks/README.md
 !BB_submissions/README.md
