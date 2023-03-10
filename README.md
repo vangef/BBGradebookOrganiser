@@ -1,14 +1,14 @@
-# BBGradebookOrganiser
+# **BBGradebookOrganiser**
 
 Blackboard Gradebook Organiser
 
-## Description
+## **Description**
 
 **Blackboard Gradebook Organiser** is a tool for organising a downloaded gradebook with assignment submissions from [Blackboard Learn &#x29c9;](https://en.wikipedia.org/wiki/Blackboard_Learn).  
 The submission files are organised per student, by extracting the student number from the submission file names and creating a directory per student. Compressed files are extracted into the student's directory, and any remaining individually submitted files are also moved into the student's directory. Student comments from the submissions are also extracted into a single text file for convenient access and review.  
-Optionally, after organising a gradebook, you can inspect the submissions to detect duplicated files from different submissions/students by generating and comparing SHA256 hashes. See section [Inspect submissions](#inspect-submissions-mag) for details.
+Optionally, you can inspect the submissions for identical files (by generating and comparing SHA256 hashes) and detect if any files have been submitted by multiple students. See [Inspect by hash](README-inspect.md) for more information.
 
-### **Features**
+## **Features**
 
 - Extracts, and organises per student, the content of submitted compressed files with extensions: `.zip`, `.rar`, `.7z`
 
@@ -26,9 +26,13 @@ Optionally, after organising a gradebook, you can inspect the submissions to det
 
   - The path of any extracted and organised compressed files will be displayed on the terminal - they need to be extracted manually
 
-- [Inspect*s* submissions](#inspect-submissions-mag) by generating and comparing SHA256 hashes of submitted files
+- [Inspect by hash](README-inspect.md) generates and compares SHA256 hashes of all the submitted files, and detects files that are identical and have been submitted by multiple students. Two ways to inspect:
 
-## Instructions
+  - Inspect gradebook: Before organising a gradebook - for identical files in the files submitted to *Blackboard*
+
+  - Inspect submissions: After organising a gradebook - for identical files in the files extracted from any submitted *compressed* files
+
+## **Instructions**
 
 ### **Download gradebook**
 
@@ -95,52 +99,11 @@ While running, the script displays on the terminal information and stats about t
 
   - Any invalid/corrupt compressed files are moved into folder `__BAD__` inside the gradebook directory
 
-## **Inspect submissions** :mag:
+## **Inspect by hash** :mag:
 
-### **Information**
+See [***Inspect by hash***](README-inspect.md) for more information & details.
 
-- Generates SHA256 hashes for each submitted file, and outputs list to CSV file
-
-  - Can exclude files from hashing, if provided with a CSV file listing the file names
-
-- Compares the generated hashes and finds any duplicate hashes - ignores duplicates if they are by the same student/submission
-
-- Finds all files with a duplicated hash and outputs them to CSV file with the following information: *Student ID*, *file path*, *file name* (without path), *SHA256 hash*
-
-  - Further inspection and filtering needs to be done manually
-
-### **Usage**
-
-For this feature you also need to install the *pandas* package:
-
-```python
-python -m pip install pandas
-```
-
-&nbsp;  
-To inspect the submissions run **`inspect_submissions.py`** and provide the name of the directory with the *organised* gradebook as an argument.
-
-- e.g. for the organised gradebook `AssignmentX` (in [*BB_submissions*](BB_submissions)/`AssignmentX`) run:
-
-```python
-python inspect_submissions.py AssignmentX
-```
-
-**Note:** run ***after*** organising a gradebook with [*organise_gradebook.py*](organise_gradebook.py).
-
-Generated CSV files can be found in directory `csv`, with the inspected submission's name as file name prefix - e.g. inspecting submissions for `AssignmentX` will create 2 CSV files:
-
-- `AssignmentX_file_hashes_[datetime].csv` - all files and their hashes
-  
-- `AssignmentX_suspicious_[datetime].csv` - files with duplicate hashes
-
-*(Optional)* In order to exclude files from hashing, create a CSV file in directory `csv` to provide the file names to be excluded - e.g. for `AssignmentX` create:
-
-- `AssignmentX_excluded.csv` with a column named `exclude_filename` and list the file names
-
-**Note:** the directory `csv` is automatically created when you run `inspect_submissions.py` - you need to create it manually if you want to exclude files before the first run.
-
-## General notes
+## **General notes**
 
 The Blackboard generated name for submission files must follow the pattern:
 > ANYTHING_STUDENTNUMBER_attempt_DATETIME_FILENAME
