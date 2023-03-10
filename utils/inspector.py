@@ -40,7 +40,7 @@ def get_hashes_in_dir(dir_path: str, excluded_filenames: list = []) -> list:  # 
 
 
 def generate_hashes_gradebook(gradebook_dir_path: str) -> str:  # main function for hashing all files in gradebook
-    gradebook_dir_name = os.path.abspath(gradebook_dir_path).split(os.path.sep)  # get name of gradebook by separating path and use rightmost part
+    gradebook_dir_name = os.path.abspath(gradebook_dir_path).split(os.path.sep)[-1]  # get name of gradebook by separating path and use rightmost part
     if not os.path.isdir(gradebook_dir_path):
         exit(f'Directory {gradebook_dir_path} does not exist.\nMake sure "{gradebook_dir_name}" exists in "BB_gradebooks".\n')
     
