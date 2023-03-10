@@ -2,7 +2,8 @@ import os, shutil, platform
 import zipfile, rarfile
 from py7zr import SevenZipFile, exceptions
 
-BAD_DIR_NAME = '__BAD__'
+from utils.settings import BAD_DIR_NAME
+
 
 def mark_file_as_BAD(file: str, bad_exception: Exception) -> None:
     try:

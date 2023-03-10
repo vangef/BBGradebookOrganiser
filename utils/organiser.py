@@ -1,7 +1,6 @@
 import os, shutil, re
 from utils.extractor import extract_file_to_dir
-
-BAD_DIR_NAME = '__BAD__'
+from utils.settings import BAD_DIR_NAME
 
 
 def validate_gradebook_dir_name(src_dir: str) -> None:
