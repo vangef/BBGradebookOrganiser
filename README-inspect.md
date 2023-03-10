@@ -36,9 +36,11 @@ python -m pip install pandas
 
 ### **Inspect gradebook**
 
-To inspect a *gradeboook* run **`inspect_gradebook.py`** and provide the name of the gradebook directory as an argument.
+If you haven't already, extract the downloaded from *Blackboard* gradebook in a new directory inside [*BB_gradebooks*](BB_gradebooks)
 
-- e.g. for the gradebook `AssignmentX` (in [*BB_gradebooks*](BB_gradebooks)/`AssignmentX`) run:
+- e.g. for `AssignmentX` extract the gradebook in [*BB_gradebooks*](BB_gradebooks)/`AssignmentX`
+
+To inspect a *gradeboook* run **`inspect_gradebook.py`** and provide the name of the gradebook directory as an argument, e.g. for the gradebook `AssignmentX` run:
 
 ```python
 python inspect_gradebook.py AssignmentX
