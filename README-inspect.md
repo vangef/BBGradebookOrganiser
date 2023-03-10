@@ -12,11 +12,11 @@ With **Inspect by hash** you can inspect the submissions for identical files (by
 
 ## **Features**
 
-- Generates SHA256 hashes for each submitted file, and outputs the list to a CSV file.
+- Generates SHA256 hashes for each submitted file, and outputs the list to a CSV file
 
   - Can exclude files from hashing, if provided with a CSV file listing the file names (only applicable for *Inspect submissions*)
 
-- Compares the generated hashes and finds any duplicate hashes - ignores duplicates if they are by the same student/submission.
+- Compares the generated hashes and finds any duplicates - ignores duplicates if they are by the same student/submission
 
 - Finds all files with the same hash and outputs the list to a CSV file with the following information:
 
