@@ -24,6 +24,8 @@ With **Inspect by hash** you can inspect the submissions for identical files (by
 
   - *Inspect submissions*: `Student ID`, `file path`, `file name`, `SHA256 hash`
 
+- File names and paths listed in the generated CSV files have hyperlinks to the actual files for a quick inspection of the file contents (or running the files, if executable)
+
 Further analysis needs to be done manually by inspecting and filtering the generated output, depending on the submission and its files.
 
 ## **Instructions**
