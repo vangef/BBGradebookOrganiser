@@ -47,6 +47,8 @@ def generate_hashes_gradebook(gradebook_dir_path: str) -> str:  # main function 
     dicts_with_hashes_list = get_hashes_in_dir(gradebook_dir_path)
     for hash_dict in dicts_with_hashes_list:
         student_id = hash_dict['filename'].split('_attempt_')[0].split('_')[-1]
+        full_path = os.path.join(os.getcwd(), hash_dict["filepath"])
+        hash_dict['filename'] = f'=HYPERLINK("{full_path}", "{hash_dict["filename"]}")'
         del hash_dict['filepath']
         hash_dict.update({'Student ID': student_id})
 
@@ -76,6 +78,9 @@ def generate_hashes_submissions(submissions_dir_path: str) -> str:  # main funct
         student_dicts_list = []
         for hash_dict in student_dicts_with_hashes_list:
             hash_dict.update({'Student ID': student_dir_name})  # update hash records with student id
+            full_path = os.path.join(os.getcwd(), hash_dict["filepath"])
+            hash_dict['filepath'] = f'=HYPERLINK("{full_path}", "{hash_dict["filepath"]}")'
+            hash_dict['filename'] = f'=HYPERLINK("{full_path}", "{hash_dict["filename"]}")'
             student_dicts_list.append(hash_dict)  # append file dict to student list of dict for csv export
     
         dicts_with_hashes_list.append(student_dicts_list)  # append student hashes to main list with all submissions
