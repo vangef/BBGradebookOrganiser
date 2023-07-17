@@ -117,9 +117,6 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
-# mkdocs documentation
-/site
-
 # mypy
 .mypy_cache/
 .dmypy.json
@@ -136,3 +133,8 @@ csv-inspect/
 
 !BB_gradebooks/README.md
 !BB_submissions/README.md
+
+# mkdocs
+
+mkdocs.yml
+/site

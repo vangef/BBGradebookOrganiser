@@ -38,9 +38,9 @@ python -m pip install pandas
 
 ### **Inspect gradebook**
 
-If you haven't already, extract the downloaded from *Blackboard* gradebook in a new directory inside [*BB_gradebooks*](BB_gradebooks)
+If you haven't already, extract the downloaded from *Blackboard* gradebook in a new directory inside *BB_gradebooks*
 
-- e.g. for `AssignmentX` extract the gradebook in [*BB_gradebooks*](BB_gradebooks)/`AssignmentX`
+- e.g. for `AssignmentX` extract the gradebook in *BB_gradebooks*/`AssignmentX`
 
 To inspect a *gradeboook* run **`inspect_gradebook.py`** and provide the name of the gradebook directory as an argument, e.g. for the gradebook `AssignmentX` run:
 
@@ -60,7 +60,7 @@ Generated CSV files can be found in directory `csv-inspect`, with the inspected 
 
 To inspect *submissions* run **`inspect_submissions.py`** and provide the name of the directory with the *organised* gradebook submissions as an argument.
 
-- e.g. for the organised gradebook `AssignmentX` (in [*BB_submissions*](BB_submissions)/`AssignmentX`) run:
+- e.g. for the organised gradebook `AssignmentX` (in *BB_submissions*/`AssignmentX`) run:
 
 ```python
 python inspect_submissions.py AssignmentX
