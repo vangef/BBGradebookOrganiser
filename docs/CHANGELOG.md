@@ -1,8 +1,10 @@
-# **BBGradebookOrganiser** - *CHANGELOG*
+# **CHANGELOG**
 
 Blackboard Gradebook Organiser - main (functional) changes and new features log
 
 ## **Notable updates**
+
+2023-07-17 Documentation updated and web docs added at [docs.vangef.net/BBGradebookOrganiser](https://docs.vangef.net/BBGradebookOrganiser)
 
 2023-03-16 Hyperlinks for file paths and names listed in generated CSV files by *inspect by hash*
 
