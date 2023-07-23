@@ -16,9 +16,9 @@ Optionally, you can inspect the submissions for identical files (by generating a
 
 - Extracts, and organises per student, the content of submitted compressed files with extensions: `.zip`, `.rar`, `.7z`
 
-  - Detects invalid/corrupt files
+    - Detects invalid/corrupt files
 
-  - Doesn't extract macOS system generated files (ignores directory *__MACOSX* inside the compressed file)
+    - Doesn't extract macOS system generated files (ignores directory *__MACOSX* inside the compressed file)
 
 - Deletes each compressed file after successful extraction into student directory
 
@@ -28,13 +28,13 @@ Optionally, you can inspect the submissions for identical files (by generating a
 
 - Checks if any compressed files (from the contents of the submitted compressed files) have been extracted and organised per student
 
-  - The path of any extracted and organised compressed files will be displayed on the terminal - they need to be extracted manually
+    - The path of any extracted and organised compressed files will be displayed on the terminal - they need to be extracted manually
 
 - [Inspect by hash](inspect.md) generates and compares SHA256 hashes of all the submitted files, and detects files that are identical and have been submitted by multiple students. Two ways to inspect:
 
-  - Inspect gradebook: Before organising a gradebook - for identical files in the files submitted to *Blackboard*
+    - Inspect gradebook: Before organising a gradebook - for identical files in the files submitted to *Blackboard*
 
-  - Inspect submissions: After organising a gradebook - for identical files in the files extracted from any submitted *compressed* files
+    - Inspect submissions: After organising a gradebook - for identical files in the files extracted from any submitted *compressed* files
 
 ## **Instructions**
 
@@ -49,6 +49,6 @@ See [***Inspect by hash***](inspect.md) for more information & details.
 The Blackboard generated name for submission files must follow the pattern:
 > ANYTHING_STUDENTNUMBER_attempt_DATETIME_FILENAME
 
-## **Changes log**
+## **Changelog**
 
 See [***Changelog***](CHANGELOG.md) for notable changes and updates.
