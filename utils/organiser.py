@@ -25,9 +25,10 @@ def get_comment_from_submission_txt(file_path: str) -> str | None:
         if not no_comment_regex_compile.findall(file_contents):
             regular_expression = f'Comments:\n.*'
             regex_compile = re.compile(regular_expression)
-            match = regex_compile.findall(file_contents)[0]
-            comment = match.split('\n')[1]
-            return comment
+            if regex_compile.findall(file_contents):
+                match = regex_compile.findall(file_contents)[0]
+                comment = match.split('\n')[1]
+                return comment
     return None
 
 
