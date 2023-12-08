@@ -22,7 +22,7 @@ Extract the downloaded gradebook in a new directory inside *BB_gradebooks*.
 
 Before running the script for the first time, install the required packages (*py7z*, *rarfile*):
 
-```python
+```console
 python -m pip install py7zr rarfile
 ```
 
@@ -37,7 +37,7 @@ To organise the gradebook run **`organise_gradebook.py`** and provide the name o
 
 - e.g. for gradebook `AssignmentX` (in *BB_gradebooks*/`AssignmentX`) run:
 
-```python
+```console
 python organise_gradebook.py AssignmentX
 ```
 

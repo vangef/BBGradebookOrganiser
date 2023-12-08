@@ -32,7 +32,7 @@ With **Inspect by hash** you can inspect the submissions for identical files (by
 
 Before running the *inspect* scripts for the first time, you also need to install the *pandas* package:
 
-```python
+```console
 python -m pip install pandas
 ```
 
@@ -44,7 +44,7 @@ If you haven't already, extract the downloaded from *Blackboard* gradebook in a 
 
 To inspect a *gradeboook* run **`inspect_gradebook.py`** and provide the name of the gradebook directory as an argument, e.g. for the gradebook `AssignmentX` run:
 
-```python
+```console
 python inspect_gradebook.py AssignmentX
 ```
 
@@ -62,7 +62,7 @@ To inspect *submissions* run **`inspect_submissions.py`** and provide the name o
 
 - e.g. for the organised gradebook `AssignmentX` (in *BB_submissions*/`AssignmentX`) run:
 
-```python
+```console
 python inspect_submissions.py AssignmentX
 ```
 
