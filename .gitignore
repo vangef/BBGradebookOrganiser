@@ -126,7 +126,6 @@ dmypy.json
 .pyre/
 
 # BBGradebookOrganiser
-TODO
 BB_gradebooks/
 BB_submissions/
 csv-inspect/
@@ -138,3 +137,10 @@ csv-inspect/
 
 mkdocs.yml
 /site
+
+# vangef
+
+__*.py
+venv*
+.TODO
+.NOTES
