@@ -11,18 +11,18 @@ from utils.settings import CSV_DIR
 def load_excluded_filenames(submissions_dir_name: str) -> list[str]:  # helper function for hashing all files
     csv_file_path = os.path.join(CSV_DIR, f'{submissions_dir_name}_excluded.csv')
     if not os.path.exists(csv_file_path):  # if csv file with excluded file names for submission does not exist
-        print(f'[WARNING] Cannot find CSV file with list of excluded file names: {csv_file_path}\n[INFO] All files will be hashed & inspected')
+        print(f'[WARNING] Cannot find CSV file with list of excluded file names: {csv_file_path}\n[INFO] All files will be hashed & inspected', flush=True)
         return []  # return empty list to continue without any excluded file names
     else:  # if csv file with excluded file names for submission exists
         try:            
             df = pd.read_csv(csv_file_path)
             filename_list = df['exclude_filename'].tolist()  # get the values of the 'filename' column as a list
             filename_list = [ f.lower() for f in filename_list ]  # convert to lowercase for comparison with submission files
-            print(f'[INFO] Using CSV file with list of excluded file names: {csv_file_path}')
+            print(f'[INFO] Using CSV file with list of excluded file names: {csv_file_path}', flush=True)
             return filename_list
         except Exception as e:  # any exception, print error and return empty list to continue without any excluded file names
-            print(f'[WARNING] Unable to load / read CSV file with list of excluded file names: {csv_file_path}\n[INFO] All files will be hashed & inspected')
-            print(f'[INFO] Error message: {e}')
+            print(f'[WARNING] Unable to load / read CSV file with list of excluded file names: {csv_file_path}\n[INFO] All files will be hashed & inspected', flush=True)
+            print(f'[INFO] Error message: {e}', flush=True)
             return []
 
 
@@ -61,7 +61,7 @@ def generate_hashes_gradebook(gradebook_dir_path: str) -> str:  # main function 
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(dicts_with_hashes_list)
-    print(f'[INFO] Created CSV file with all files & hashes in gradebook: {gradebook_dir_name}\nCSV file: {csv_file_path}')
+    print(f'[INFO] Created CSV file with all files & hashes in gradebook: {gradebook_dir_name}\nCSV file: {csv_file_path}', flush=True)
     return csv_file_path
 
 
@@ -95,7 +95,7 @@ def generate_hashes_submissions(submissions_dir_path: str) -> str:  # main funct
         writer.writeheader()
         for student_dict in dicts_with_hashes_list:
             writer.writerows(student_dict)
-    print(f'[INFO] Created CSV file with all files & hashes for submissions in: {submissions_dir_name}\nCSV file: {csv_file_path}')
+    print(f'[INFO] Created CSV file with all files & hashes for submissions in: {submissions_dir_name}\nCSV file: {csv_file_path}', flush=True)
     return csv_file_path
    
 
@@ -119,7 +119,7 @@ def generate_duplicate_hashes_generic(hashes_csv_file_path: str, drop_columns: l
     csv_out = hashes_csv_file_path.rsplit('_', 1)[0].replace('file_hashes', 'duplicate_') + datetime.now().strftime("%Y%m%d-%H%M%S") + '.csv'
     try:
         df_duplicate.to_csv(csv_out, index=False)
-        print(f'[INFO] Created CSV file with duplicate hashes in {gradebook_or_submissions_str}: {assignment_name}\nCSV file: {csv_out}')
+        print(f'[INFO] Created CSV file with duplicate hashes in {gradebook_or_submissions_str}: {assignment_name}\nCSV file: {csv_out}', flush=True)
     except Exception as e:
         exit(f'[ERROR] Something went wrong while trying to save csv file with duplicate hashes\nError message: {e}')
 

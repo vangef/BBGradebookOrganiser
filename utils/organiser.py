@@ -2,7 +2,6 @@ import os, shutil, re
 from utils.extractor import extract_file_to_dir
 from utils.settings import BAD_DIR_NAME
 
-
 def validate_gradebook_dir_name(src_dir: str) -> None:
     if not os.path.isdir(src_dir):  # check if it exists and is a directory
         print(f"\n[Error] Incorrect directory: {src_dir}\n[Info] Make sure the directory exists in 'BB_gradebooks'")
@@ -53,7 +52,7 @@ def get_gradebook_stats(src_dir: str) -> dict[str, int]:
     tracked_files_list = [ f'{files_counter[ext]} {ext}' for ext in tracked_file_extensions ] 
     tracked_msg = f"{', '.join(str(f) for f in tracked_files_list)}"
     msg = f'\n[Stats] Gradebook contains {files_counter["all"]} file(s){dirs_msg}\n[Stats] Tracking {len(tracked_file_extensions)} file extension(s), files found: {tracked_msg}\n[Stats] Files with untracked extension: {files_counter["untracked"]}'
-    print(msg)
+    print(msg, flush=True)
     return files_counter
 
 
@@ -88,10 +87,11 @@ def organise_gradebook(src_dir: str, dest_dir: str) -> None:
     """
     validate_gradebook_dir_name(src_dir)  # check if dir exists, and has files in it - exits if not
     os.makedirs(dest_dir, exist_ok=True)  # create the destination directory if it doesn't exist
-    print('\nGetting gradebook stats...')
+    print('\nGetting gradebook stats...', flush=True)
     files_counter = get_gradebook_stats(src_dir)  # print stats about the files in gradebook and get files_counter dict to use later
     students_numbers: list[str] = []  # list to add and count unique student numbers from all files in gradebook 
-    print('\nStart organising...\n')
+    print('\nStart organising... (this may take a while depending on the number of submissions)\n', flush=True)
+
     for file_name in os.listdir(src_dir):  # iterate through all files in the directory
         if BAD_DIR_NAME not in file_name:  # ignore dir BAD_DIR_NAME (created after first run if corrupt compressed files found)
             student_no = file_name.split('_attempt_')[0].split('_')[-1]  # get student number from file name !! pattern might need adjusting if file name format from blackboard changes !!
@@ -99,14 +99,14 @@ def organise_gradebook(src_dir: str, dest_dir: str) -> None:
             organise_file_per_student(src_dir, dest_dir, file_name, student_no)
     
     abs_path = os.getcwd()  # absolute path of main script
-    print(f'[Info] Submissions organised into directory: {os.path.join(abs_path, dest_dir)}')
-    print(f'[Info] Unique student numbers in gradebook files: {len(set(students_numbers))}')
+    print(f'[Info] Submissions organised into directory: {os.path.join(abs_path, dest_dir)}', flush=True)
+    print(f'[Info] Unique student numbers in gradebook files: {len(set(students_numbers))}', flush=True)
     if files_counter['.txt'] == 0:
-        print(f'[Info] No submission text files found, file with comments not created')
+        print(f'[Info] No submission text files found, file with comments not created', flush=True)
     else:
-        print(f'[Info] Comments in file: {dest_dir}_comments.txt')
+        print(f'[Info] Comments in file: {dest_dir}_comments.txt', flush=True)
     
-    print(f'[Note] Compressed files (.zip, .rar, .7z) are automatically deleted from the gradebook directory after successful extraction')
+    print(f'[Note] Compressed files (.zip, .rar, .7z) are automatically deleted from the gradebook directory after successful extraction', flush=True)
 
     
 def check_submissions_dir_for_compressed(submissions_dir: str) -> None:
