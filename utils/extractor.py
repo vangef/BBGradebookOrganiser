@@ -39,11 +39,10 @@ def extract_rar(rar_file: str, target_dir: str) -> None:
                 rarfile.UNRAR_TOOL = 'unrar'
             files = rar_ref.namelist()
             files = [ f for f in files if "__MACOSX" not in f ]  # filter out files with "__MACOSX" in the name
-            try:
-                rar_ref.extractall(target_dir, files)  # extract the remaining files
-                rar_ref.close()
-            except OSError:
-                mark_file_as_BAD(rar_file, e)
+            rar_ref.extractall(target_dir, files)  # extract the remaining files
+            rar_ref.close()
+    except OSError as e:
+        mark_file_as_BAD(rar_file, e)
     except rarfile.BadRarFile as e:
         mark_file_as_BAD(rar_file, e)
     except rarfile.NotRarFile as e:
