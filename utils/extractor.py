@@ -4,7 +4,6 @@ from py7zr import SevenZipFile, exceptions
 
 from utils.settings import BAD_DIR_NAME
 
-
 def mark_file_as_BAD(file: str, bad_exception: Exception) -> None:
     try:
         filename = os.path.basename(file)
@@ -12,10 +11,9 @@ def mark_file_as_BAD(file: str, bad_exception: Exception) -> None:
         os.makedirs(bad_dir, exist_ok=True)
         bad_file_path = os.path.join(bad_dir, filename)
         shutil.move(file, bad_file_path)
-        print(f'[Warning] Found BAD compressed file: {filename}\nMoved to: {bad_file_path}\nError message: {bad_exception}')
+        print(f'\n[Warning] Found BAD compressed file: {filename}\nMoved to: {bad_file_path}\nError message: {bad_exception}')
     except Exception as e: 
-        print(f'[Error] {e}')
-
+        print(f'\n[Error] {e}')
 
 def extract_zip(zip_file: str, target_dir: str) -> None | Exception:
     try:
@@ -26,9 +24,8 @@ def extract_zip(zip_file: str, target_dir: str) -> None | Exception:
     except zipfile.BadZipfile as e:
         mark_file_as_BAD(zip_file, e)
     except Exception as e:
-        print(f'[ERROR] Something went wrong while extracting the contents of a submitted zip file. Check the error message, get student id and download / organise manually\nError message: {e}')
+        print(f'\n[ERROR] Something went wrong while extracting the contents of a submitted zip file. Check the error message, get student id and download / organise manually\nError message: {e}')
         return e
-
 
 def extract_rar(rar_file: str, target_dir: str) -> None:
     try:    
@@ -48,9 +45,8 @@ def extract_rar(rar_file: str, target_dir: str) -> None:
     except rarfile.NotRarFile as e:
         mark_file_as_BAD(rar_file, e)
     except rarfile.RarCannotExec as e:
-        print('[Error] Missing unrar tool\nfor Windows: make sure file UnRAR.exe exists in directory \'utils\'\nfor Linux/Mac: need to install unrar (check README)')
+        print('\n[Error] Missing unrar tool\nfor Windows: make sure file UnRAR.exe exists in directory \'utils\'\nfor Linux/Mac: need to install unrar (check README)')
         exit()
-
 
 def extract_7z(seven_zip_file: str, target_dir: str) -> None:
     try:  # extract the 7z file using py7zr
@@ -67,7 +63,6 @@ def extract_7z(seven_zip_file: str, target_dir: str) -> None:
     except Exception as e:
         mark_file_as_BAD(seven_zip_file, e)
 
-
 def extract_file_to_dir(file_path: str, student_dir: str) -> None | Exception:
     os.makedirs(student_dir, exist_ok=True)  # create the subdirectory for student
 
@@ -78,4 +73,4 @@ def extract_file_to_dir(file_path: str, student_dir: str) -> None | Exception:
     elif file_path.lower().endswith('.7z'):
         extract_7z(file_path, student_dir) 
     else:
-        print(f"[Error] unknown file type: {file_path}")
+        print(f"\n[Error] unknown file type: {file_path}")
