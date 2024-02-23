@@ -1,0 +1,5 @@
+# for organise gradebook script
+py7zr
+rarfile
+# for inspect gradebook/submissions scripts
+pandas
