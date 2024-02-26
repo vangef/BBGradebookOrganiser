@@ -5,7 +5,7 @@ import hashlib
 import pandas as pd
 from functools import partial
 
-from utils.settings import CSV_DIR
+from utils.settings import CSV_DIR, BB_GRADEBOOKS_DIR, BB_SUBMISSIONS_DIR
 
 
 def load_excluded_filenames(submissions_dir_name: str) -> list[str]:  # helper function for hashing all files
@@ -25,7 +25,6 @@ def load_excluded_filenames(submissions_dir_name: str) -> list[str]:  # helper f
             print(f'[INFO] Error message: {e}', flush=True)
             return []
 
-
 def get_hashes_in_dir(dir_path: str, excluded_filenames: list = []) -> list:  # helper function for hashing all files
     hash_list = []
     for subdir, dirs, files in os.walk(dir_path):  # loop through all files in the directory and generate hashes
@@ -38,11 +37,10 @@ def get_hashes_in_dir(dir_path: str, excluded_filenames: list = []) -> list:  # 
                         hash_list.append({ 'filepath': filepath, 'filename': filename, 'sha256 hash': filehash})
     return hash_list
 
-
 def generate_hashes_gradebook(gradebook_dir_path: str) -> str:  # main function for hashing all files in gradebook
     gradebook_dir_name = os.path.abspath(gradebook_dir_path).split(os.path.sep)[-1]  # get name of gradebook by separating path and use rightmost part
     if not os.path.isdir(gradebook_dir_path):
-        exit(f'Directory {gradebook_dir_path} does not exist.\nMake sure "{gradebook_dir_name}" exists in "BB_gradebooks".\n')
+        exit(f'Directory {gradebook_dir_path} does not exist.\nMake sure "{gradebook_dir_name}" exists in "{BB_GRADEBOOKS_DIR}".\n')
     
     dicts_with_hashes_list = get_hashes_in_dir(gradebook_dir_path)
     for hash_dict in dicts_with_hashes_list:
@@ -64,11 +62,10 @@ def generate_hashes_gradebook(gradebook_dir_path: str) -> str:  # main function 
     print(f'[INFO] Created CSV file with all files & hashes in gradebook: {gradebook_dir_name}\nCSV file: {csv_file_path}', flush=True)
     return csv_file_path
 
-
 def generate_hashes_submissions(submissions_dir_path: str) -> str:  # main function for hashing all files in submissions
     submissions_dir_name = os.path.abspath(submissions_dir_path).split(os.path.sep)[-1]  # get name of submission/assignment by separating path and use rightmost part
     if not os.path.isdir(submissions_dir_path):
-        exit(f'Directory {submissions_dir_path} does not exist.\nMake sure "{submissions_dir_name}" exists in "BB_submissions".\n')
+        exit(f'Directory {submissions_dir_path} does not exist.\nMake sure "{submissions_dir_name}" exists in "{BB_SUBMISSIONS_DIR}".\n')
 
     excluded_filenames = load_excluded_filenames(submissions_dir_name)
     dicts_with_hashes_list = []
@@ -96,8 +93,7 @@ def generate_hashes_submissions(submissions_dir_path: str) -> str:  # main funct
         for student_dict in dicts_with_hashes_list:
             writer.writerows(student_dict)
     print(f'[INFO] Created CSV file with all files & hashes for submissions in: {submissions_dir_name}\nCSV file: {csv_file_path}', flush=True)
-    return csv_file_path
-   
+    return csv_file_path 
 
 def generate_duplicate_hashes_generic(hashes_csv_file_path: str, drop_columns: list[str]):
     csv = pd.read_csv(hashes_csv_file_path)

@@ -4,6 +4,7 @@ from py7zr import SevenZipFile, exceptions
 
 from utils.settings import BAD_DIR_NAME
 
+
 def mark_file_as_BAD(file: str, bad_exception: Exception) -> None:
     try:
         filename = os.path.basename(file)
@@ -73,4 +74,4 @@ def extract_file_to_dir(file_path: str, student_dir: str) -> None | Exception:
     elif file_path.lower().endswith('.7z'):
         extract_7z(file_path, student_dir) 
     else:
-        print(f"\n[ERROR] unknown file type: {file_path}\n", flush=True)
+        print(f'\n[ERROR] unknown file type: {file_path}\n', flush=True)

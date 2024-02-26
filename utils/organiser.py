@@ -1,10 +1,12 @@
 import os, shutil, re
+
 from utils.extractor import extract_file_to_dir
-from utils.settings import BAD_DIR_NAME
+from utils.settings import BAD_DIR_NAME, BB_GRADEBOOKS_DIR
+
 
 def validate_gradebook_dir_name(src_dir: str) -> None:
     if not os.path.isdir(src_dir):  # check if it exists and is a directory
-        print(f"\n[Error] Incorrect directory: {src_dir}\n[Info] Make sure the directory exists in 'BB_gradebooks'")
+        print(f'\n[Error] Incorrect directory: {src_dir}\n[Info] Make sure the directory exists in "{BB_GRADEBOOKS_DIR}"')
         exit()
     if not os.listdir(src_dir):  # check if there are any files in the directory
         print(f'\n[Info] No files found in this gradebook - nothing to organise')
@@ -12,7 +14,6 @@ def validate_gradebook_dir_name(src_dir: str) -> None:
     if len(os.listdir(src_dir)) == 1 and BAD_DIR_NAME in os.listdir(src_dir):  # if there is 1 file/directory and it is the 'BAD' directory
         print(f'\n[Info] Gradebook has only invalid compressed files in: {os.path.join(src_dir, BAD_DIR_NAME)}\n[Info] Nothing to organise')
         exit()
-
 
 def get_comment_from_submission_txt(file_path: str) -> str | None:
     no_comment_text = f'Comments:\nThere are no student comments for this assignment.'
@@ -29,7 +30,6 @@ def get_comment_from_submission_txt(file_path: str) -> str | None:
                 comment = match.split('\n')[1]
                 return comment
     return None
-
 
 def get_gradebook_stats(src_dir: str) -> dict[str, int]:
     all_files = [ os.path.join(src_dir, f) for f in os.listdir(src_dir) if BAD_DIR_NAME not in f ]
@@ -55,7 +55,6 @@ def get_gradebook_stats(src_dir: str) -> dict[str, int]:
     print(msg, flush=True)
     return files_counter
 
-
 def organise_file_per_student(src_dir: str, dest_dir: str, file_name: str, student_no: str) -> None:
     student_dir = os.path.join(dest_dir, student_no)
     os.makedirs(student_dir, exist_ok=True)  # create student directory if it doesn't exist
@@ -78,7 +77,6 @@ def organise_file_per_student(src_dir: str, dest_dir: str, file_name: str, stude
                 file_name = file_name.split('_attempt_')[1].split('_', 1)[1]  # rename any remaining files before moving - remove the BB generated info added to the original file name
             new_file_path = os.path.join(student_dir, os.path.basename(file_name))
             shutil.move(file_path, new_file_path)  # move the file to student directory
-
 
 def organise_gradebook(src_dir: str, dest_dir: str) -> None:
     """1) extracts .zip, .rar, .7z files, organises contents into directories per student number, and deletes compressed files after successful extraction
@@ -107,7 +105,6 @@ def organise_gradebook(src_dir: str, dest_dir: str) -> None:
         print(f'[Info] Comments in file: {dest_dir}_comments.txt', flush=True)
     
     print(f'[Note] Compressed files (.zip, .rar, .7z) are automatically deleted from the gradebook directory after successful extraction', flush=True)
-
     
 def check_submissions_dir_for_compressed(submissions_dir: str) -> None:
     """checks if any submitted compressed files contain more compressed files inside (they are not recursively extracted)
