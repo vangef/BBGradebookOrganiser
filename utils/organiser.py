@@ -120,6 +120,6 @@ def check_submissions_dir_for_compressed(submissions_dir: str) -> None:
     
     if compressed_files:
         compressed_files_str = '\n'.join(compressed_files)
-        print(f'\n[Warning] One or more compressed files from the gradebook contain compressed file(s) inside ({len(compressed_files)} found in total)')
-        print('\nSee below the organised per student compressed files, and extract them manually:\n')
+        print(f'\n[Warning] One or more compressed files found in the extracted and organised submission files ({len(compressed_files)} found in total)')
+        print('\nSee below the organised per student compressed files, and extract them manually if necessary:\n')
         print(compressed_files_str)
