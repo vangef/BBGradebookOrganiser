@@ -2,7 +2,7 @@ import os, shutil, platform
 import zipfile, rarfile
 from py7zr import SevenZipFile, exceptions
 
-from utils.settings import BAD_DIR_NAME
+from utils.settings import BAD_DIR_NAME, IGNORE_DIRS
 
 
 def mark_file_as_BAD(file: str, bad_exception: Exception) -> None:
@@ -19,8 +19,8 @@ def mark_file_as_BAD(file: str, bad_exception: Exception) -> None:
 def extract_zip(zip_file: str, target_dir: str) -> None | Exception:
     try:
         with zipfile.ZipFile(zip_file, 'r') as zip_ref:
-            members = [ m for m in zip_ref.infolist() if "__MACOSX" not in m.filename ]
-            zip_ref.extractall(target_dir, members=members)  # extract all files, ignoring those with the "__MACOSX" string in the name
+            members = [ m for m in zip_ref.infolist() if not any(dir_name in m.filename for dir_name in IGNORE_DIRS) ]  # filter out files/dirs using IGNORE_DIRS
+            zip_ref.extractall(target_dir, members=members)  # extract remaining files
             zip_ref.close()
     except zipfile.BadZipfile as e:
         mark_file_as_BAD(zip_file, e)
@@ -36,7 +36,7 @@ def extract_rar(rar_file: str, target_dir: str) -> None:
             else:  # if Linux or Mac
                 rarfile.UNRAR_TOOL = 'unrar'
             files = rar_ref.namelist()
-            files = [ f for f in files if "__MACOSX" not in f ]  # filter out files with "__MACOSX" in the name
+            files = [ f for f in files if not any(dir_name in f for dir_name in IGNORE_DIRS) ]  # filter out files/dirs using IGNORE_DIRS
             rar_ref.extractall(target_dir, files)  # extract the remaining files
             rar_ref.close()
     except OSError as e:
@@ -56,7 +56,7 @@ def extract_7z(seven_zip_file: str, target_dir: str) -> None:
             if not seven_zip.getnames():
                 raise exceptions.Bad7zFile
             files = seven_zip.getnames()
-            files = [ f for f in files if "__MACOSX" not in f ]  # filter out files with "__MACOSX" in the name
+            files = [ f for f in files if not any(dir_name in f for dir_name in IGNORE_DIRS) ]  # filter out files/dirs using IGNORE_DIRS
             seven_zip.extract(target_dir, targets=files)  # extract the remaining files
             seven_zip.close()
     except exceptions.Bad7zFile as e:
