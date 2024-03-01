@@ -1,7 +1,7 @@
 import os, shutil, re
 
 from utils.extractor import extract_file_to_dir
-from utils.settings import BAD_DIR_NAME, BB_GRADEBOOKS_DIR
+from utils.settings import BAD_DIR_NAME, BB_GRADEBOOKS_DIR, IGNORE_DIRS
 
 
 def validate_gradebook_dir_name(src_dir: str) -> None:
@@ -15,21 +15,24 @@ def validate_gradebook_dir_name(src_dir: str) -> None:
         print(f'\n[Info] Gradebook has only invalid compressed files in: {os.path.join(src_dir, BAD_DIR_NAME)}\n[Info] Nothing to organise')
         exit()
 
-def get_comment_from_submission_txt(file_path: str) -> str | None:
-    no_comment_text = f'Comments:\nThere are no student comments for this assignment.'
-    no_comment_text_regex = no_comment_text
-    no_comment_regex_compile = re.compile(no_comment_text_regex)
+def get_comment_from_submission_txt(file_path: str) -> tuple[str, str] | None:
+    no_comment_regex = f'Comments:\nThere are no student comments for this assignment.'
+    no_comment_pattern = re.compile(no_comment_regex)
 
     with open(file_path) as f:
         file_contents = f.read()
-        if not no_comment_regex_compile.findall(file_contents):
-            regular_expression = f'Comments:\n.*'
-            regex_compile = re.compile(regular_expression)
-            if regex_compile.findall(file_contents):
-                match = regex_compile.findall(file_contents)[0]
-                comment = match.split('\n')[1]
-                return comment
-    return None
+        if not no_comment_pattern.findall(file_contents):
+            comment_regex = f'Comments:\n.*'
+            name_regex = f'^Name:\s*.*'
+            comment_pattern = re.compile(comment_regex)
+            name_pattern = re.compile(name_regex)
+            if comment_pattern.findall(file_contents):
+                comment_match = comment_pattern.findall(file_contents)[0]
+                comment = comment_match.split('\n')[1]
+                name_match = name_pattern.findall(file_contents)[0]
+                name = name_match.split('Name:')[1].split('(')[0].strip() or ''
+                return comment, name
+    return None, None
 
 def get_gradebook_stats(src_dir: str) -> dict[str, int]:
     all_files = [ os.path.join(src_dir, f) for f in os.listdir(src_dir) if BAD_DIR_NAME not in f ]
@@ -68,11 +71,11 @@ def organise_file_per_student(src_dir: str, dest_dir: str, file_name: str, stude
                 os.remove(file_path)  # delete compressed file after successful extraction
         else:
             if file_path_lowercase.endswith('.txt'):
-                comment = get_comment_from_submission_txt(file_path)  # get student comment (if any) from submission txt file
-                if comment:
+                comment, name = get_comment_from_submission_txt(file_path)  # get student comment (if any), and name, from submission txt file
+                if comment and name:
                     comments_filename = f'{dest_dir}_comments.txt'
                     with open(comments_filename, 'a') as f:
-                        f.write(f'\nStudent number: {student_no} - File: {file_path}\nComment: {comment}\n')
+                        f.write(f'\nStudent number: {student_no} - Student name: {name}\nFile: {file_path}\nComment: {comment}\n')
             else:
                 file_name = file_name.split('_attempt_')[1].split('_', 1)[1]  # rename any remaining files before moving - remove the BB generated info added to the original file name
             new_file_path = os.path.join(student_dir, os.path.basename(file_name))
@@ -88,7 +91,7 @@ def organise_gradebook(src_dir: str, dest_dir: str) -> None:
     print('\nGetting gradebook stats...', flush=True)
     files_counter = get_gradebook_stats(src_dir)  # print stats about the files in gradebook and get files_counter dict to use later
     students_numbers: list[str] = []  # list to add and count unique student numbers from all files in gradebook 
-    print('\nStart organising... (this may take a while depending on the number of submissions)\n', flush=True)
+    print('\nStart organising... (this may take a while depending on the number -and size- of submissions)\n', flush=True)
 
     for file_name in os.listdir(src_dir):  # iterate through all files in the directory
         if BAD_DIR_NAME not in file_name:  # ignore dir BAD_DIR_NAME (created after first run if corrupt compressed files found)
@@ -96,15 +99,17 @@ def organise_gradebook(src_dir: str, dest_dir: str) -> None:
             students_numbers.append(student_no)
             organise_file_per_student(src_dir, dest_dir, file_name, student_no)
     
+    ignored_str = ', '.join(IGNORE_DIRS)
+    print(f'[Info] Skipped extracting files in dirs with name that includes any of the following strings: {ignored_str}\n', flush=True)
     abs_path = os.getcwd()  # absolute path of main script
-    print(f'[Info] Submissions organised into directory: {os.path.join(abs_path, dest_dir)}', flush=True)
-    print(f'[Info] Unique student numbers in gradebook files: {len(set(students_numbers))}', flush=True)
+    print(f'[Info] Submissions organised into directory: {os.path.join(abs_path, dest_dir)}\n', flush=True)
+    print(f'[Info] Unique student numbers in gradebook files: {len(set(students_numbers))}\n', flush=True)
     if files_counter['.txt'] == 0:
-        print(f'[Info] No submission text files found, file with comments not created', flush=True)
+        print(f'[Info] No submission text files found, file with comments not created\n', flush=True)
     else:
-        print(f'[Info] Comments in file: {dest_dir}_comments.txt', flush=True)
+        print(f'[Info] Comments in file: {dest_dir}_comments.txt\n', flush=True)
     
-    print(f'[Note] Compressed files (.zip, .rar, .7z) are automatically deleted from the gradebook directory after successful extraction', flush=True)
+    print(f'[Note] Compressed files (.zip, .rar, .7z) are automatically deleted from the gradebook directory after successful extraction\n', flush=True)
     
 def check_submissions_dir_for_compressed(submissions_dir: str) -> None:
     """checks if any submitted compressed files contain more compressed files inside (they are not recursively extracted)
