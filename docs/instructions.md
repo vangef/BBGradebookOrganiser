@@ -18,21 +18,42 @@ Extract the downloaded gradebook in a new directory inside *BB_gradebooks*.
 
 - e.g. for `AssignmentX` extract the gradebook in *BB_gradebooks*/`AssignmentX`
 
-## **Organise gradebook**
+## **Script requirements**
 
-Before running the script for the first time, install the required packages (*py7z*, *rarfile*):
+Before running the script for the first time, install the required python packages:
+
+Option 1 - install `py7z`, `rarfile`
 
 ```console
 python -m pip install py7zr rarfile
 ```
 
-Note: If running on Linux/Mac, you also need to have `unrar` installed in order to be able to extract *.rar* files.
+Option 2 - install all packages, including `pandas` which is used in [Inspect by hash](inspect.md), using the requirements file
+
+```console
+python -m pip install -r requirements.txt
+```
+
+Note: If running on Linux/Mac, you also need to have `unrar` installed in order to be able to extract `.rar` files.
 
 - `sudo apt install unrar` for Linux
 
 - `brew install rar` for Mac
 
-&nbsp;  
+## (Optional) **Edit script defaults**
+
+You can change the default settings by editing *utils/settings.py*. The main setting you might want to edit is `IGNORE_DIRS` - the list of names for directories, or files, to ignore when extracting from compressed files.
+
+Ignored directories by default:
+
+- `__MACOSX` (macOS system generated files)
+
+- `vendor` (composer / laravel)
+
+- `node_modules` (npm)
+
+## **Organise gradebook**
+
 To organise the gradebook run **`organise_gradebook.py`** and provide the name of the directory with the *extracted* gradebook (from section *Extract gradebook* above) as an argument.
 
 - e.g. for gradebook `AssignmentX` (in *BB_gradebooks*/`AssignmentX`) run:
