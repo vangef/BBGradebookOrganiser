@@ -20,11 +20,11 @@ Optionally, you can inspect the submissions for identical files (by generating a
 
     - Skips extracting files and directories if their path contains any of the *ignored dirs*, as set in *settings.py* - ignored directories by default:
 
-      - `__MACOSX` (macOS system generated files)
+        - `__MACOSX` (macOS system generated files)
 
-      - `vendor` (composer / laravel)
+        - `vendor` (composer / laravel)
 
-      - `node_modules` (npm)
+        - `node_modules` (npm)
 
 - Deletes each compressed file after successful extraction into student directory
 
