@@ -1,23 +1,5 @@
 # **Instructions**
 
-## **Download gradebook**
-
-1. Go to the course page on Blackboard
-
-2. Go to *Grade Centre -> Full Grade Centre*
-
-3. Find the assignment and click on the arrow for more options, and select *Assignment File Download*
-
-4. Select all (click *Show All* at the bottom first, to display all users) and click submit to generate the gradebook zip file
-
-5. Wait for the generated download link to appear, and click to download
-
-## **Extract gradebook**
-
-Extract the downloaded gradebook in a new directory inside *BB_gradebooks*.
-
-- e.g. for `AssignmentX` extract the gradebook in *BB_gradebooks*/`AssignmentX`
-
 ## **Script requirements**
 
 Before running the script for the first time, install the required python packages:
@@ -51,6 +33,24 @@ Ignored directories by default:
 - `vendor` (composer / laravel)
 
 - `node_modules` (npm)
+
+## **Download gradebook**
+
+1. Go to the course page on Blackboard
+
+2. Go to *Grade Centre -> Full Grade Centre*
+
+3. Find the assignment and click on the arrow for more options, and select *Assignment File Download*
+
+4. Select all (click *Show All* at the bottom first, to display all users) and click submit to generate the gradebook zip file
+
+5. Wait for the generated download link to appear, and click to download
+
+## **Extract gradebook**
+
+Extract the downloaded gradebook in a new directory inside *BB_gradebooks*.
+
+- e.g. for `AssignmentX` extract the gradebook in *BB_gradebooks*/`AssignmentX`
 
 ## **Organise gradebook**
 
