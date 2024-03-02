@@ -140,7 +140,7 @@ mkdocs.yml
 
 # vangef
 
-__*.py
+___*.py
 venv*
 .TODO
 .NOTES
