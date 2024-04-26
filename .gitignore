@@ -140,6 +140,9 @@ mkdocs.yml
 
 # vangef
 
+requirements.*.txt
+!requirements.txt
+
 ___*.py
 venv*
 .TODO
