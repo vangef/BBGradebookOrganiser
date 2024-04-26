@@ -30,9 +30,11 @@ Ignored directories by default:
 
 - `__MACOSX` (macOS system generated files)
 
-- `vendor` (composer / laravel)
+- `.git` (git repo files)
 
 - `node_modules` (npm)
+
+- `vendor` (composer / laravel)
 
 ## **Download gradebook**
 

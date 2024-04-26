@@ -22,9 +22,11 @@ Optionally, you can inspect the submissions for identical files (by generating a
 
         - `__MACOSX` (macOS system generated files)
 
-        - `vendor` (composer / laravel)
+        - `.git` (git repo files)
 
         - `node_modules` (npm)
+
+        - `vendor` (composer / laravel)
 
 - Deletes each compressed file after successful extraction into student directory
 
