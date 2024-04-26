@@ -1,40 +1,4 @@
-# **Instructions**
-
-## **Script requirements**
-
-Before running the script for the first time, install the required python packages:
-
-Option 1 - install `py7z`, `rarfile`
-
-```console
-python -m pip install py7zr rarfile
-```
-
-Option 2 - install all packages, including `pandas` which is used in [Inspect by hash](inspect.md), using the requirements file
-
-```console
-python -m pip install -r requirements.txt
-```
-
-Note: If running on Linux/Mac, you also need to have `unrar` installed in order to be able to extract `.rar` files.
-
-- `sudo apt install unrar` for Linux
-
-- `brew install rar` for Mac
-
-## (Optional) **Edit script defaults**
-
-You can change the default settings by editing *utils/settings.py*. The main setting you might want to edit is `IGNORE_DIRS` - the list of names for directories, or files, to ignore when extracting from compressed files.
-
-Ignored directories by default:
-
-- `__MACOSX` (macOS system generated files)
-
-- `.git` (git repo files)
-
-- `node_modules` (npm)
-
-- `vendor` (composer / laravel)
+# **Using BBGradebookOrganiser**
 
 ## **Download gradebook**
 
@@ -90,4 +54,4 @@ Compressed files are deleted after successfully extracting and organising the co
 
 ## **Inspect by hash** :mag:
 
-See [***Inspect by hash***](inspect.md) for more information & details.
+See [***Inspect by hash***](../inspect/about.md) for more information & details.

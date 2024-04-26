@@ -10,7 +10,7 @@ Blackboard Gradebook Organiser - main (functional) changes and new features log
 
 2023-03-16 Hyperlinks for file paths and names listed in generated CSV files by *inspect by hash*
 
-2023-03-10 Added *inspect gradebook* and merged with *inspect submission* to make [***inspect by hash***](inspect.md)
+2023-03-10 Added *inspect gradebook* and merged with *inspect submission* to make [***inspect by hash***](inspect/about.md)
 
 2023-03-02 Added *exclude files from hashing*
 
