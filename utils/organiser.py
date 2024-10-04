@@ -77,7 +77,7 @@ def organise_file_per_student(src_dir: str, dest_dir: str, file_name: str, stude
                     with open(comments_filename, 'a') as f:
                         f.write(f'\nStudent number: {student_no} - Student name: {name}\nFile: {file_path}\nComment: {comment}\n')
             else:
-                file_name = file_name.split('_attempt_')[1].split('_', 1)[1]  # rename any remaining files before moving - remove the BB generated info added to the original file name
+                file_name = file_name.split('_attempt_', 1)[1].split('_', 1)[1]  # rename any remaining files before moving - remove the BB generated info added to the original file name
             new_file_path = os.path.join(student_dir, os.path.basename(file_name))
             shutil.move(file_path, new_file_path)  # move the file to student directory
 
@@ -95,7 +95,7 @@ def organise_gradebook(src_dir: str, dest_dir: str) -> None:
 
     for file_name in os.listdir(src_dir):  # iterate through all files in the directory
         if BAD_DIR_NAME not in file_name:  # ignore dir BAD_DIR_NAME (created after first run if corrupt compressed files found)
-            student_no = file_name.split('_attempt_')[0].split('_')[-1]  # get student number from file name !! pattern might need adjusting if file name format from blackboard changes !!
+            student_no = file_name.split('_attempt_', 1)[0].split('_')[-1]  # get student number from file name !! pattern might need adjusting if file name format from blackboard changes !!
             students_numbers.append(student_no)
             organise_file_per_student(src_dir, dest_dir, file_name, student_no)
     
