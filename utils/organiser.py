@@ -77,7 +77,10 @@ def organise_file_per_student(src_dir: str, dest_dir: str, file_name: str, stude
                     with open(comments_filename, 'a') as f:
                         f.write(f'\nStudent number: {student_no} - Student name: {name}\nFile: {file_path}\nComment: {comment}\n')
             else:
-                file_name = file_name.split('_attempt_', 1)[1].split('_', 1)[1]  # rename any remaining files before moving - remove the BB generated info added to the original file name
+                try:
+                    file_name = file_name.split('_attempt_', 1)[1].split('_', 1)[1]  # rename any remaining files before moving - remove the BB generated info added to the original file name
+                except IndexError as e:
+                    print(f'Cannot process file - possible incorrect format of filename')
             new_file_path = os.path.join(student_dir, os.path.basename(file_name))
             shutil.move(file_path, new_file_path)  # move the file to student directory
 
