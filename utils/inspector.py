@@ -54,7 +54,7 @@ def generate_hashes_gradebook(gradebook_dir_path: str) -> str:  # main function 
     csv_file_name = f'{gradebook_dir_name}_gradebook_file_hashes_{datetime.now().strftime("%Y%m%d-%H%M%S")}.csv'
     csv_file_path = os.path.join(CSV_DIR, csv_file_name)
 
-    with open(csv_file_path, 'w', newline='') as csvfile:  # open the output CSV file for writing
+    with open(csv_file_path, 'w', newline='', encoding='utf-8') as csvfile:  # open the output CSV file for writing
         fieldnames = ['Student ID', 'filename', 'sha256 hash']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
@@ -86,7 +86,7 @@ def generate_hashes_submissions(submissions_dir_path: str) -> str:  # main funct
     csv_file_name = f'{submissions_dir_name}_submissions_file_hashes_{datetime.now().strftime("%Y%m%d-%H%M%S")}.csv'
     csv_file_path = os.path.join(CSV_DIR, csv_file_name)
     
-    with open(csv_file_path, 'w', newline='') as csvfile:  # open the output CSV file for writing
+    with open(csv_file_path, 'w', newline='', encoding='utf-8') as csvfile:  # open the output CSV file for writing
         fieldnames = ['Student ID', 'filepath', 'filename', 'sha256 hash']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
