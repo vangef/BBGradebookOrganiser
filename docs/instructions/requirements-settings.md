@@ -22,7 +22,7 @@ python -m pip install -r requirements.txt
 
 - `brew install rar` for Mac
 
-## (Optional) **Edit defaults**
+## (Optional) **Edit settings**
 
 You can change the default settings by editing *utils/settings.py*. The main setting you might want to edit is `IGNORE_DIRS` - the list of names for directories, or files, to ignore when extracting from compressed files.
 

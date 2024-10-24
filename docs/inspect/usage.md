@@ -1,13 +1,5 @@
 # **Using Inspect by hash** :mag:
 
-## **Requirements**
-
-Before running the *inspect* scripts for the first time, you also need to install the *pandas* package:
-
-```console
-python -m pip install pandas
-```
-
 ## **Inspect gradebook**
 
 If you haven't already, extract the downloaded from *Blackboard* gradebook in a new directory inside *BB_gradebooks*

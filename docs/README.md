@@ -46,7 +46,7 @@ Optionally, you can inspect the submissions for identical files (by generating a
 
 ## **Instructions**
 
-See the documentation for [Setup](instructions/setup.md) and [Usage](instructions/usage.md) instructions, and more information & details about [***Inspect by hash***](inspect/about.md).
+See the documentation for [Requirements & Settings](instructions/requirements-settings.md) and [Usage](instructions/usage.md) instructions, and more information & details about [***Inspect by hash***](inspect/about.md).
 
 ## **General notes**
 
