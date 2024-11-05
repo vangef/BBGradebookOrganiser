@@ -1,7 +1,7 @@
 import os, shutil, re
 
 from utils.extractor import extract_file_to_dir
-from utils.settings import BAD_DIR_NAME, BB_GRADEBOOKS_DIR, IGNORE_DIRS
+from utils.settings import BAD_DIR_NAME, BB_GRADEBOOKS_DIR, IGNORE_DIRS, TRACKED_FILE_EXT
 
 
 def validate_gradebook_dir_name(src_dir: str) -> None:
@@ -19,7 +19,7 @@ def get_comment_from_submission_txt(file_path: str) -> tuple[str, str] | None:
     no_comment_regex = f'Comments:\nThere are no student comments for this assignment.'
     no_comment_pattern = re.compile(no_comment_regex)
 
-    with open(file_path) as f:
+    with open(file_path, encoding='utf-8') as f:
         file_contents = f.read()
         if not no_comment_pattern.findall(file_contents):
             comment_regex = f'Comments:\n.*'
@@ -39,12 +39,11 @@ def get_gradebook_stats(src_dir: str) -> dict[str, int]:
     dirs = [ f for f in all_files if os.path.isdir(f) and BAD_DIR_NAME not in f ]
     normal_files = [ f for f in all_files if os.path.isfile(f) ]
     
-    tracked_file_extensions = [ '.zip', '.rar', '.7z', '.txt' ]  # add extension in list to track stats for more
     files_counter = {}
     files_counter['all'], files_counter['dirs'], files_counter['normal'] = len(all_files), len(dirs), len(normal_files)
 
     tracked_files_counter = 0
-    for ext in tracked_file_extensions:
+    for ext in TRACKED_FILE_EXT:
         files_counter[ext] = len([ f for f in normal_files if f.lower().endswith(ext) ])
         tracked_files_counter += files_counter[ext]
     
@@ -52,9 +51,9 @@ def get_gradebook_stats(src_dir: str) -> dict[str, int]:
     files_counter['untracked'] = files_counter['normal'] - tracked_files_counter
 
     dirs_msg = f'. Also found {len(dirs)} dir(s), wasn\'t expecting any!' if len(dirs) else ''
-    tracked_files_list = [ f'{files_counter[ext]} {ext}' for ext in tracked_file_extensions ] 
+    tracked_files_list = [ f'{files_counter[ext]} {ext}' for ext in TRACKED_FILE_EXT ] 
     tracked_msg = f"{', '.join(str(f) for f in tracked_files_list)}"
-    msg = f'\n[Stats] Gradebook contains {files_counter["all"]} file(s){dirs_msg}\n[Stats] Tracking {len(tracked_file_extensions)} file extension(s), files found: {tracked_msg}\n[Stats] Files with untracked extension: {files_counter["untracked"]}'
+    msg = f'\n[Stats] Gradebook contains {files_counter["all"]} file(s){dirs_msg}\n[Stats] Tracking {len(TRACKED_FILE_EXT)} file extension(s), files found: {tracked_msg}\n[Stats] Files with untracked extension: {files_counter["untracked"]}'
     print(msg, flush=True)
     return files_counter
 
