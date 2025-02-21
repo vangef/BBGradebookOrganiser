@@ -1,8 +1,45 @@
 import os, shutil, re
+from collections import defaultdict
 
 from utils.extractor import extract_file_to_dir
-from utils.settings import BAD_DIR_NAME, BB_GRADEBOOKS_DIR, IGNORE_DIRS, TRACKED_FILE_EXT
+from utils.settings import BAD_DIR_NAME, MULTIPLE_DIR_NAME, BB_GRADEBOOKS_DIR, IGNORE_DIRS, TRACKED_FILE_EXT
 
+
+def parse_filename(filename: str):
+    """Extract STUDENTNUMBER and DATETIME from the filename."""
+    pattern = r'^(.*?)_(\d+)_attempt_(\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2})(?:_.*)?(?:\..+)?$'
+    match = re.match(pattern, filename)
+    if match:
+        return match.group(2), match.group(3)  # STUDENTNUMBER, DATETIME
+    return None, None
+
+def filter_latest_submissions(directory: str):
+    """Keep only the latest attempt for each student and move older attempts to MULTIPLE_DIR_NAME."""
+    submissions = defaultdict(list)
+    
+    # ensure MULTIPLE_DIR_NAME folder exists
+    multiple_folder = os.path.join(directory, MULTIPLE_DIR_NAME)
+    os.makedirs(multiple_folder, exist_ok=True)
+    
+    # collect all valid files
+    for filename in os.listdir(directory):
+        filepath = os.path.join(directory, filename)
+        if os.path.isfile(filepath):
+            student_number, timestamp = parse_filename(filename)
+            if student_number and timestamp:
+                submissions[student_number].append((timestamp, filepath))
+    
+    # process submissions
+    for student, files in submissions.items():
+        files.sort(reverse=True, key=lambda x: x[0])  # sort by timestamp (most recent first)
+        latest_timestamp = files[0][0]  # get the most recent timestamp
+        
+        # keep all files from the latest attempt, move older ones
+        for timestamp, filepath in files:
+            if timestamp != latest_timestamp:
+                shutil.move(filepath, os.path.join(multiple_folder, os.path.basename(filepath)))
+
+    print(f"Filtering complete. Older submissions moved to folder {MULTIPLE_DIR_NAME}")
 
 def validate_gradebook_dir_name(src_dir: str) -> None:
     if not os.path.isdir(src_dir):  # check if it exists and is a directory
@@ -34,9 +71,37 @@ def get_comment_from_submission_txt(file_path: str) -> tuple[str, str] | None:
                 return comment, name
     return None, None
 
+def get_comment_from_submission_txt_BB_ultra(file_path: str) -> tuple[str, str] | None:
+    with open(file_path, encoding='utf-8') as f:
+        file_contents = f.read()
+    
+    match = re.search(r'Submission Field:\s*<br>(.*)', file_contents, re.DOTALL)  # find the section starting with "Submission Field: <br>"
+    if not match:
+        return None, None
+    
+    section = match.group(1)    
+    section = re.sub(r'\s*<p><a href.*?</a>', '', section, flags=re.DOTALL)  # remove the part starting with "<p><a href" and ending with "</a></p>"    
+    paragraphs = re.findall(r'<p>(.*?)</p>', section, re.DOTALL) or None  # extract text inside <p> tags
+    
+    if not paragraphs:
+        return None, None
+        
+    cleaned_text = '\n'.join(p.replace('<br>', '\n') for p in paragraphs)  # replace <br> with new lines within paragraphs
+    
+    if not cleaned_text:
+        return None, None
+    
+    name_regex = f'^Name:\s*.*'
+    name_pattern = re.compile(name_regex)
+    name_match = name_pattern.findall(file_contents)[0]
+    name = name_match.split('Name:')[1].split('(')[0].strip() or ''
+
+    return cleaned_text.strip(), name  # comment, name
+
+
 def get_gradebook_stats(src_dir: str) -> dict[str, int]:
-    all_files = [ os.path.join(src_dir, f) for f in os.listdir(src_dir) if BAD_DIR_NAME not in f ]
-    dirs = [ f for f in all_files if os.path.isdir(f) and BAD_DIR_NAME not in f ]
+    all_files = [ os.path.join(src_dir, f) for f in os.listdir(src_dir) if BAD_DIR_NAME not in f and MULTIPLE_DIR_NAME not in f ]
+    dirs = [ f for f in all_files if os.path.isdir(f) and BAD_DIR_NAME not in f and MULTIPLE_DIR_NAME not in f ]
     normal_files = [ f for f in all_files if os.path.isfile(f) ]
     
     files_counter = {}
@@ -70,7 +135,7 @@ def organise_file_per_student(src_dir: str, dest_dir: str, file_name: str, stude
                 os.remove(file_path)  # delete compressed file after successful extraction
         else:
             if file_path_lowercase.endswith('.txt'):
-                comment, name = get_comment_from_submission_txt(file_path)  # get student comment (if any), and name, from submission txt file
+                comment, name = get_comment_from_submission_txt_BB_ultra(file_path)  # get student comment (if any), and name, from submission txt file
                 if comment and name:
                     comments_filename = f'{dest_dir}_comments.txt'
                     with open(comments_filename, 'a') as f:
@@ -90,13 +155,14 @@ def organise_gradebook(src_dir: str, dest_dir: str) -> None:
     """
     validate_gradebook_dir_name(src_dir)  # check if dir exists, and has files in it - exits if not
     os.makedirs(dest_dir, exist_ok=True)  # create the destination directory if it doesn't exist
+    filter_latest_submissions(src_dir)
     print('\nGetting gradebook stats...', flush=True)
     files_counter = get_gradebook_stats(src_dir)  # print stats about the files in gradebook and get files_counter dict to use later
     students_numbers: list[str] = []  # list to add and count unique student numbers from all files in gradebook 
     print('\nStart organising... (this may take a while depending on the number -and size- of submissions)\n', flush=True)
 
     for file_name in os.listdir(src_dir):  # iterate through all files in the directory
-        if BAD_DIR_NAME not in file_name:  # ignore dir BAD_DIR_NAME (created after first run if corrupt compressed files found)
+        if BAD_DIR_NAME not in file_name and MULTIPLE_DIR_NAME not in file_name:  # ignore dirs BAD_DIR_NAME (created after first run if corrupt compressed files found) and MULTIPLE_DIR_NAME (dir with older attempts)
             student_no = file_name.split('_attempt_', 1)[0].split('_')[-1]  # get student number from file name !! pattern might need adjusting if file name format from blackboard changes !!
             students_numbers.append(student_no)
             organise_file_per_student(src_dir, dest_dir, file_name, student_no)
