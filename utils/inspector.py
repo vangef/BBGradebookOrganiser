@@ -5,7 +5,7 @@ import hashlib
 import pandas as pd
 from functools import partial
 
-from utils.settings import CSV_DIR, BB_GRADEBOOKS_DIR, BB_SUBMISSIONS_DIR
+from utils.settings import CSV_DIR, BB_GRADEBOOKS_DIR, BB_SUBMISSIONS_DIR, MIN_FILESIZE_IN_BYTES
 
 
 def load_excluded_filenames(submissions_dir_name: str) -> list[str]:  # helper function for hashing all files
@@ -31,10 +31,13 @@ def get_hashes_in_dir(dir_path: str, excluded_filenames: list = []) -> list:  # 
         for filename in files:
             if filename.lower() not in excluded_filenames:  # convert to lowercase for comparison with excluded files & do not hash if in the excluded list
                 filepath = os.path.join(subdir, filename)
-                with open(filepath, 'rb') as f: 
-                    filehash = hashlib.sha256(f.read()).hexdigest()
-                    if filehash != 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855':  # do not include hashes of empty files
+                if os.path.getsize(filepath) > MIN_FILESIZE_IN_BYTES:  # file size more than MIN_FILESIZE_IN_BYTES (as set in settings.py)
+                    with open(filepath, 'rb') as f: 
+                        filehash = hashlib.sha256(f.read()).hexdigest()
+                        #if filehash != 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855':  # do not include hashes of empty files
                         hash_list.append({ 'filepath': filepath, 'filename': filename, 'sha256 hash': filehash})
+                # else:
+                #     print(f'size: {os.path.getsize(filepath)}B, {filepath}')
     return hash_list
 
 def generate_hashes_gradebook(gradebook_dir_path: str) -> str:  # main function for hashing all files in gradebook
